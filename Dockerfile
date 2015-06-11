@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Tomohisa Kusano <siomiz@gmail.com>
 
-ENV OPENCV_VERSION 3.0.0-rc1
+ENV OPENCV_VERSION 3.0.0
 ENV W2XCONV_VERSION v1.1.1
 
 COPY *.sh /
