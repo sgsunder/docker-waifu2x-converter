@@ -1,4 +1,4 @@
-FROM ubuntu:14.04
+FROM debian:stretch-slim
 WORKDIR /opt/w2x
 
 ARG OPENCV_VERSION=3.0.0
@@ -11,10 +11,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 		git-core \
 		build-essential \
 	# Build OpenCV
- && mkdir -p /usr/local/src/opencv && cd /usr/local/src/opencv \
+ && mkdir -p /usr/local/src/opencv \
+ && cd /usr/local/src/opencv \
  && git clone https://github.com/itseez/opencv.git . \
  && git checkout ${OPENCV_VERSION} \
- && mkdir -p release && cd /usr/local/src/opencv/release \
+ && mkdir -p ./release && cd ./release \
  && cmake \
 	 	-D CMAKE_BUILD_TYPE=Release \
 	 	-D OPENCV_EXTRA_MODULES_PATH=modules \
@@ -29,7 +30,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && make \
  && make install \
  	# Build waifu2x-converter-cpp
- && mkdir -p /usr/local/src/waifu2x-converter-cpp && cd /usr/local/src/waifu2x-converter-cpp \
+ && mkdir -p /usr/local/src/waifu2x-converter-cpp \
+ && cd /usr/local/src/waifu2x-converter-cpp \
  && git clone https://github.com/WL-Amigo/waifu2x-converter-cpp . \
  && git checkout ${W2XCONV_VERSION} \
  && cp -r models /opt/w2x \
@@ -39,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  		-I./include -I/usr/local/include \
  		-L/usr/local/lib \
  		-lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lopencv_features2d \
+        -lpthread \
 	# Cleanup
  && apt-get purge -yqq \
 		cmake \
